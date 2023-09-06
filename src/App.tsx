@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCookies } from 'react-cookie';
 import { apiUrl } from './api/config';
 
@@ -6,21 +5,20 @@ import { apiUrl } from './api/config';
 const App = () => {
 	const [cookies, setCookie, removeCookie] = useCookies(['authentication']);
 
-	const fetchFisToken = () => {
-		fetch(apiUrl + '/authorization/fis')
+	const fetchFisToken = async () => {
+		await fetch(apiUrl + '/authorization/fis')
 			.then(response => {
 				if (!response.ok) {
 					throw new Error('Network Error');
 				}
 
-				console.log('fetch response: ', response.json());
-				return response;
+				return response.json();
 			})
-			// .then(fisToken => setCookie('fisToken', fisToken);
-	
-	};
+			.then(fisToken => {
+				setCookie('authentication', fisToken, {secure: true, sameSite: 'none'});
+				console.log('COOKIES UPDATED: ', cookies.authentication);
+			})
 
-	const fetchHorizonToken = () => {
 	};
 
 	return (
