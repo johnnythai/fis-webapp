@@ -2,22 +2,18 @@ import { apiUrl } from "./config";
 
 const fetchToken = async (token: string) => {
 	try{
-		await fetch(`${apiUrl}/authorization/${token}`)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error('Network Error');
-					console.log('NOT OK')
-				}
+		const response = await fetch(`${apiUrl}/authorization/${token}`);
 
-				return response.json();
-			})
-			.then(auth => {
-				console.log('AUTHENTICATED.', auth);
-				return auth
-			})
-	} catch {
-		const err = new Error('Unauthorized.');
-		window.alert(err);
+		if (!response.ok) {
+			throw new Error(`${response.status} ${response.statusText}`);
+		}
+
+		const auth = await response.json();
+
+		console.log('AUTHENTICATED.', auth);
+		return auth
+	} catch (error) {
+		window.alert(error);
 	}
 };
 

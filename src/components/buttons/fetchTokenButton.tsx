@@ -1,4 +1,3 @@
-import { useCookies } from "react-cookie";
 import { fetchToken } from "../../api/fetchToken";
 
 
@@ -9,11 +8,9 @@ interface FetchTokenButtonProps {
 }
 
 const FetchTokenButton = (props: FetchTokenButtonProps) => {
-	// const [cookies, setCookie, removeCookie] = useCookies(['authentication']);
-
 	const fetchRequestedToken = async () => {
 		const auth = await fetchToken(props.token);
-		// setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
 	};
 
 	return(

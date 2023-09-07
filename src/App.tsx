@@ -1,9 +1,9 @@
 import FetchTokenButton from "./components/buttons/fetchTokenButton";
-import { withCookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 
 
 const App = () => {
-	const [cookies,setCookie, removeCookie] = useCookies(['authentication']);
+	const [cookies,setCookie] = useCookies(['authentication']);
 
 	return (
 		<div className="App">
@@ -12,11 +12,11 @@ const App = () => {
 			<FetchTokenButton token='fis' setCookie={setCookie}/>
 			<FetchTokenButton 
 				token='horizon'
-				fisToken={cookies.authentication.fisToken}
+				fisToken={cookies.authentication?.fisToken}
 				setCookie={setCookie}
 			/>
 		</div>
 	);
 };
 
-export default withCookies(App);
+export default App;
