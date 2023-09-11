@@ -1,5 +1,6 @@
 import FetchTokenButton from "./components/buttons/fetchTokenButton";
 import { useCookies } from "react-cookie";
+import CustomerRelationshipSummaryForm from "./components/forms/customerRelationshipSummaryForm";
 
 
 const App = () => {
@@ -15,6 +16,8 @@ const App = () => {
 				fisToken={cookies.authentication?.fisToken}
 				setCookie={setCookie}
 			/>
+			<hr />
+			<CustomerRelationshipSummaryForm />
 		</div>
 	);
 };
