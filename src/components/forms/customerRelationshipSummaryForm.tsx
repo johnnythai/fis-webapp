@@ -7,11 +7,11 @@ const CustomerRelationshipSummaryFields = (props: any) => {
 	return(
 		<>
 			<label>
-				Customer ID: <input name="customerId" ref={props.customerIdRef}/>
+				Customer ID: <input name="customerId" pattern="[0-9]*" maxLength={14} ref={props.customerIdRef}/>
 			</label>
 			<br />
 			<label>
-				TIN: <input name="tin" ref={props.tinRef}/>
+				Account Number: <input name="tin" type="number" maxLength={20} ref={props.accountNumberRef}/>
 			</label>
 		
 		</>
@@ -20,19 +20,20 @@ const CustomerRelationshipSummaryFields = (props: any) => {
 
 const CustomerRelationshipSummaryForm = () => {
 	const customerIdRef = useRef<HTMLInputElement>();
-	const tinRef = useRef<HTMLInputElement>();
+	const accountNumberRef = useRef<HTMLInputElement>();
 
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
-		if (!tinRef.current?.value && !customerIdRef.current?.value) {
+		if (!accountNumberRef.current?.value && !customerIdRef.current?.value) {
 			alert('At least one field is required.');
 		} 
 	};
 
 	return(
 		<form method="post" onSubmit={handleSubmit}>
-			<CustomerRelationshipSummaryFields tinRef={tinRef} customerIdRef={customerIdRef}/>
+			<h4>Customer Relationship Summary</h4>
+			<CustomerRelationshipSummaryFields accountNumberRef={accountNumberRef} customerIdRef={customerIdRef}/>
 			<br />
 			<button type="reset">Reset</button>
 			<button type="submit">Submit</button>

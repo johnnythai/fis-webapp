@@ -1,5 +1,4 @@
-import { fetchToken } from "../../api/fetchToken";
-
+import { fetchApi, Options } from "../../api/fetchApi";
 
 interface FetchTokenButtonProps {
 	token: string,
@@ -9,8 +8,12 @@ interface FetchTokenButtonProps {
 
 const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	const fetchRequestedToken = async () => {
-		const auth = await fetchToken(props.token);
+		const options = {
+			fisToken: props.fisToken?	
+		};
+		const auth = await fetchApi(`/api/authorization/${props.token}`, options);
 		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+	// set headers when fetching Horizon token
 	};
 
 	return(
