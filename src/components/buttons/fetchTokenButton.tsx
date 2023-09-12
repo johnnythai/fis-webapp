@@ -3,7 +3,7 @@ import { fetchApi } from "../../api/fetchApi";
 interface FetchTokenButtonProps {
 	token: string,
 	fisToken?: string,
-	setCookie: any
+	setCookie: any 
 }
 
 const FetchTokenButton = (props: FetchTokenButtonProps) => {
@@ -13,16 +13,27 @@ const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	};
 
 	const fetchHorizonToken = async () => {
-		const options = {
-			fisToken: props.fisToken,
-		};		
+		try {
+			if (props.fisToken === undefined) {
+				throw new Error('Invalid FIS Token.');
+			}
 
-		const auth = await fetchApi(`/api/authorization/${props.token}`, options);
-		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+			const fetchOptions = {
+				headers: {
+					fisToken: props.fisToken,
+				},
+			};		
+
+			const auth = await fetchApi(`/api/authorization/${props.token}`, fetchOptions);
+			props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+		} catch (error) {
+			alert(error);
+		}
+
 	};
 
 	const fetchRequestedToken = async () => {
-		props.token === 'fisToken' ? fetchFisToken() : fetchHorizonToken();
+		props.token === 'fis' ? fetchFisToken() : fetchHorizonToken();
 	};
 
 	return(
