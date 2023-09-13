@@ -10,14 +10,14 @@ const App = () => {
 		<div className="App">
 			<h4>Sanbox Application for FIS Horizon API.</h4>
 
-			<FetchTokenButton token='fis' setCookie={setCookie}/>
+			<FetchTokenButton token='fis' setCookie={setCookie} />
 			<FetchTokenButton 
 				token='horizon'
 				fisToken={cookies.authentication?.fisToken}
 				setCookie={setCookie}
 			/>
 			<hr />
-			<CustomerRelationshipSummaryForm />
+			<CustomerRelationshipSummaryForm horizonToken={cookies.authentication?.horizonToken} />
 		</div>
 	);
 };

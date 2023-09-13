@@ -10,6 +10,7 @@ const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	const fetchFisToken = async () => {
 		const auth = await fetchApi(`/api/authorization/${props.token}`);
 		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+		alert(`Authenticated. ${props.token} received`);
 	};
 
 	const fetchHorizonToken = async () => {
@@ -26,6 +27,8 @@ const FetchTokenButton = (props: FetchTokenButtonProps) => {
 
 			const auth = await fetchApi(`/api/authorization/${props.token}`, fetchOptions);
 			props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+
+			alert(`Authenticated. ${props.token} received`);
 		} catch (error) {
 			alert(error);
 		}

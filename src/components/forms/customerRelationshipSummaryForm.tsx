@@ -1,9 +1,8 @@
 import { useRef } from "react";
-import {fetchApi} from "../../api/fetchApi";
+import { fetchApi } from "../../api/fetchApi";
 
 const CustomerRelationshipSummaryFields = (props: any) => {
 
-	
 	return(
 		<>
 			<label>
@@ -22,9 +21,9 @@ const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
 	const customerIdRef = useRef<HTMLInputElement>();
 	const accountNumberRef = useRef<HTMLInputElement>();
 
-	const fetchCustomerId = () => {
+	const fetchCustomerId = async () => {
 		const applicationCode = 'DD';
-		const accountNumber = accountNumberRef.current.value;
+		const accountNumber = accountNumberRef.current?.value;
 	
 		const fetchOptions = {
 			headers: {
@@ -32,22 +31,27 @@ const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
 			},
 		};
 
-		const customerId = fetchApi(`/api/horizon/${applicationCode}/${accountNumber}`, fetchOptions);
-		return customerId;
+		try {
+			const customerInfo = await fetchApi(`/api/horizon/${applicationCode}/${accountNumber}`, fetchOptions);
+			const customerId = await customerInfo.accountInformation.customerKey;
+			if (customerId === undefined) {
+				throw new Error('Customer not found.');
+			}
+
+			return customerId;
+		} catch (error) {
+			alert(error);
+		}
 	};
 	
-	const fetchCustomerRelationshipSummary = async (formData: FormData) => {
-		if (!customerIdRef.current?.value) {
-			const customerId = await fetchCustomerId();
-		} else {
-			const customerId = customerIdRef.current.value;
-		}
+	const fetchCustomerRelationshipSummary = async () => {
+		let customerId;
+		customerIdRef.current?.value ? customerId = customerIdRef.current.value : customerId = await fetchCustomerId();
 
 		const fetchOptions = {
 			headers: {
 				horizonToken: props.horizonToken,
 			},
-			body: JSON.stringify(formData)
 		};
 		
 		const customerRelationshipSummary = await fetchApi(`/api/horizon/${customerId}/relationship-summary`, fetchOptions)
@@ -61,8 +65,7 @@ const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
 			alert('At least one field is required.');
 		} 
 
-		const formData = new FormData(e.target);
-		await fetchCustomerRelationshipSummary(formData);
+		await fetchCustomerRelationshipSummary();
 	};
 
 	return(

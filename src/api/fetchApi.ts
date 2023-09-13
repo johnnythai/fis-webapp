@@ -1,16 +1,20 @@
 import { apiUrl } from "./config";
 
 
-export interface Options{
-	token: string,	
-	fisToken?: string,	
+interface FetchOptions {
+	method?: string,
+	headers?: {
+		'Content-Type'?: string
+		fisToken?: string,
+		horizonToken?: string,
+	},
 }
 
-const fetchApi = async (pathParams: string, options?: Options) => {
+
+
+const fetchApi = async (pathParams: string, fetchOptions?: FetchOptions) => {
 	try{
-		const response = await fetch(apiUrl + pathParams, {
-			
-		});
+		const response = await fetch(apiUrl + pathParams, fetchOptions);
 
 		if (!response.ok) {
 			throw new Error(`${response.status} ${response.statusText}`);
