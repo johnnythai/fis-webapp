@@ -1,38 +1,56 @@
 import { useRef } from "react";
 import { fetchApi } from "../../api/fetchApi";
 
-const CustomerRelationshipSummaryFields = (props: any) => {
 
+interface Authentication {
+	fisToken: string,
+	horizonToken: string	
+} 
+
+const RelationshipSummaryFields = (props: any) => {
 	return(
 		<>
 			<label>
-				Customer ID: <input name="customerId" pattern="[0-9]*" maxLength={14} ref={props.customerIdRef}/>
+				Customer ID: <input 
+					name="customerId" 
+					pattern="[0-9]*" 
+					maxLength={14} 
+					ref={props.customerIdRef} />
 			</label>
 			<br />
 			<label>
-				Account Number: <input name="tin" pattern="[0-9]*"  maxLength={20} ref={props.accountNumberRef}/>
+				Account Number: <input 
+					name="tin" 
+					pattern="[0-9]*" 
+					maxLength={20} 
+					ref={props.accountNumberRef} />
 			</label>
-		
 		</>
 	);
 };
 
-const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
+const RelationshipSummaryForm = (props: { authentication: Authentication }) => {
 	const customerIdRef = useRef<HTMLInputElement>();
 	const accountNumberRef = useRef<HTMLInputElement>();
+	const horizonToken = props.authentication.horizonToken;
+	const fisToken = props.authentication.fisToken;
 
 	const fetchCustomerId = async () => {
-		const applicationCode = 'DD';
+		const applicationCode = 'Z9';
 		const accountNumber = accountNumberRef.current?.value;
 	
 		const fetchOptions = {
 			headers: {
-				horizonToken: props.horizonToken,	
+				horizonToken: horizonToken,	
+				fisToken: fisToken,
 			},
 		};
 
 		try {
-			const customerInfo = await fetchApi(`/api/horizon/${applicationCode}/${accountNumber}`, fetchOptions);
+			const customerInfo = await fetchApi(
+				`/api/horizon/accounts/${applicationCode}/${accountNumber}`, 
+				fetchOptions
+			);
 			const customerId = await customerInfo.accountInformation.customerKey;
 			if (customerId === undefined) {
 				throw new Error('Customer not found.');
@@ -46,15 +64,21 @@ const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
 	
 	const fetchCustomerRelationshipSummary = async () => {
 		let customerId;
-		customerIdRef.current?.value ? customerId = customerIdRef.current.value : customerId = await fetchCustomerId();
+		customerIdRef.current?.value 
+			? customerId = customerIdRef.current.value 
+			: customerId = await fetchCustomerId();
 
 		const fetchOptions = {
 			headers: {
-				horizonToken: props.horizonToken,
+				horizonToken: horizonToken,
+				fisToken: fisToken,
 			},
 		};
 		
-		const customerRelationshipSummary = await fetchApi(`/api/horizon/${customerId}/relationship-summary`, fetchOptions)
+		const customerRelationshipSummary = await fetchApi(
+			`/api/horizon/customers/${customerId}/relationship-summary`, 
+			fetchOptions
+		);
 		console.log('CUSTOMER RELATIONSHIP SUMMARY: ', customerRelationshipSummary);
 	};
 
@@ -71,7 +95,8 @@ const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
 	return(
 		<form method="post" onSubmit={handleSubmit}>
 			<h4>Customer Relationship Summary</h4>
-			<CustomerRelationshipSummaryFields accountNumberRef={accountNumberRef} customerIdRef={customerIdRef}/>
+			<RelationshipSummaryFields 
+				accountNumberRef={accountNumberRef} customerIdRef={customerIdRef} />
 			<br />
 			<button type="reset">Reset</button>
 			<button type="submit">Submit</button>
@@ -79,4 +104,4 @@ const CustomerRelationshipSummaryForm = (props: {horizonToken: string}) => {
 	);
 };
 
-export default CustomerRelationshipSummaryForm;
+export default RelationshipSummaryForm;
