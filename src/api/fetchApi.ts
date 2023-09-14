@@ -17,7 +17,7 @@ const fetchApi = async (pathParams: string, fetchOptions?: FetchOptions) => {
 		const response = await fetch(apiUrl + pathParams, fetchOptions);
 
 		if (!response.ok) {
-			throw new Error(`${response.status} ${response.statusText}`);
+			return new Error(`${response.status} ${response.statusText}`);
 		}
 
 		const auth = await response.json();

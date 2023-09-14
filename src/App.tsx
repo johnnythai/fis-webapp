@@ -1,23 +1,26 @@
 import FetchTokenButton from "./components/buttons/fetchTokenButton";
 import { useCookies } from "react-cookie";
-import CustomerRelationshipSummaryForm from "./components/forms/customerRelationshipSummaryForm";
+import RelationshipSummaryForm from "./components/forms/relationshipSummaryForm";
 
 
 const App = () => {
-	const [cookies,setCookie] = useCookies(['authentication']);
+	const [cookies, setCookie] = useCookies(['authentication']);
 
 	return (
 		<div className="App">
 			<h4>Sanbox Application for FIS Horizon API.</h4>
 
-			<FetchTokenButton token='fis' setCookie={setCookie} />
 			<FetchTokenButton 
-				token='horizon'
-				fisToken={cookies.authentication?.fisToken}
-				setCookie={setCookie}
-			/>
+				token='FIS' 
+				authentication={cookies.authentication}
+				setCookie={setCookie} />
+			<FetchTokenButton 
+				token='HORIZON'
+				authentication={cookies.authentication}
+				setCookie={setCookie} />
 			<hr />
-			<CustomerRelationshipSummaryForm horizonToken={cookies.authentication?.horizonToken} />
+			<RelationshipSummaryForm 
+				authentication={cookies.authentication} />
 		</div>
 	);
 };

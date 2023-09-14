@@ -2,41 +2,49 @@ import { fetchApi } from "../../api/fetchApi";
 
 interface FetchTokenButtonProps {
 	token: string,
-	fisToken?: string,
+	authentication: {
+		fisToken?: string,
+		horizonToken?: string
+	},
 	setCookie: any 
 }
 
 const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	const fetchFisToken = async () => {
+		let authTokens: { fisToken?: string } = {};
+
 		const auth = await fetchApi(`/api/authorization/${props.token}`);
-		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
-		alert(`Authenticated. ${props.token} received`);
+		authTokens['fisToken'] = auth.access_token;
+		props.setCookie(
+			'authentication', 
+			JSON.stringify(authTokens), 
+			{ secure: true, sameSite: 'none' }
+		);
+
+		alert(`Authenticated. ${props.token} token received`);
 	};
 
 	const fetchHorizonToken = async () => {
-		try {
-			if (props.fisToken === undefined) {
-				throw new Error('Invalid FIS Token.');
-			}
+		if (!props.authentication) {
+			alert('FIS authentication required');
+			return	
+		}	
 
-			const fetchOptions = {
-				headers: {
-					fisToken: props.fisToken,
-				},
-			};		
+		const auth = await fetchApi(`/api/authorization/${props.token}`,{
+			headers: { fisToken: props.authentication.fisToken },
+		});
+		props.authentication.horizonToken = auth.jwt;
+		props.setCookie(
+			'authentication', 
+			JSON.stringify(props.authentication), 
+			{ secure: true, sameSite: 'none' }
+		);
 
-			const auth = await fetchApi(`/api/authorization/${props.token}`, fetchOptions);
-			props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
-
-			alert(`Authenticated. ${props.token} received`);
-		} catch (error) {
-			alert(error);
-		}
-
+		alert(`Authenticated. ${props.token} token received`);
 	};
 
 	const fetchRequestedToken = async () => {
-		props.token === 'fis' ? fetchFisToken() : fetchHorizonToken();
+		props.token === 'FIS' ? await fetchFisToken() : await fetchHorizonToken();
 	};
 
 	return(

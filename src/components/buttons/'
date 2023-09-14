@@ -1,0 +1,36 @@
+import { fetchApi } from "../../api/fetchApi";
+
+interface FetchTokenButtonProps {
+	token: string,
+	fisToken?: string,
+	setCookie: any 
+}
+
+const FetchTokenButton = (props: FetchTokenButtonProps) => {
+	const fetchFisToken = async () => {
+		const auth = await fetchApi(`/api/authorization/${props.token}`);
+		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+	};
+
+	const fetchHorizonToken = async () => {
+		if (props.fisToken === undefined) {
+			alert('Invalid FIS Token.');
+		}
+
+		const auth = await fetchApi(`/api/authorization/${props.token}`,{
+			headers: { fisToken: props.fisToken },
+		});
+		props.setCookie('authentication', auth, { secure: true, sameSite: 'none' });
+	};
+
+	const fetchRequestedToken = async () => {
+		props.token === 'fis' ? await fetchFisToken() : await fetchHorizonToken();
+		alert(`Authenticated. ${props.token} token received`);
+	};
+
+	return(
+		<button onClick={fetchRequestedToken}>Request {props.token} Token</button>
+	);
+};
+
+export default FetchTokenButton;
