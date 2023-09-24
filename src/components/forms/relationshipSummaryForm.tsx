@@ -32,8 +32,8 @@ const RelationshipSummaryFields = (props: any) => {
 const RelationshipSummaryForm = (props: { authentication: Authentication }) => {
 	const customerIdRef = useRef<HTMLInputElement>();
 	const accountNumberRef = useRef<HTMLInputElement>();
-	const horizonToken = props.authentication.horizonToken;
-	const fisToken = props.authentication.fisToken;
+	const horizonToken = props.authentication?.horizonToken;
+	const fisToken = props.authentication?.fisToken;
 
 	const fetchCustomerId = async () => {
 		const applicationCode = 'Z9';
