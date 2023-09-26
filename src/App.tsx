@@ -21,6 +21,7 @@ const App = () => {
 			<hr />
 			<RelationshipSummaryForm 
 				authentication={cookies.authentication} />
+			<hr />
 		</div>
 	);
 };

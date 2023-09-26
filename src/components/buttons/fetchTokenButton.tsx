@@ -12,7 +12,14 @@ interface FetchTokenButtonProps {
 const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	const fetchFisToken = async () => {
 		const auth = await fetchApi(`/api/authorization/${props.token}`);
+
+		if (!auth) {
+			alert('Unable to authenticate.');	
+			return;
+		}
+
 		const authToken = JSON.stringify({ fisToken: auth.access_token })
+		console.log('auth: ', authToken);
 		props.setCookie(
 			'authentication', 
 			authToken,
