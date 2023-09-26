@@ -21,6 +21,7 @@ const fetchApi = async (pathParams: string, fetchOptions?: FetchOptions) => {
 		}
 
 		const auth = await response.json();
+		console.log('fetch response: ', auth);
 		return auth
 	} catch (error) {
 		alert(error);
