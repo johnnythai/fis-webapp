@@ -11,13 +11,11 @@ interface FetchTokenButtonProps {
 
 const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	const fetchFisToken = async () => {
-		let authTokens: { fisToken?: string } = {};
-
 		const auth = await fetchApi(`/api/authorization/${props.token}`);
-		authTokens['fisToken'] = auth.access_token;
+		const authToken = JSON.stringify({ fisToken: auth.access_token })
 		props.setCookie(
 			'authentication', 
-			JSON.stringify(authTokens), 
+			authToken,
 			{ secure: true, sameSite: 'none' }
 		);
 
