@@ -13,7 +13,7 @@ const FetchTokenButton = (props: FetchTokenButtonProps) => {
 	const fetchFisToken = async () => {
 		const auth = await fetchApi(`/api/authorization/${props.token}`);
 
-		if (!auth) {
+		if (!auth.access_token) {
 			alert('Unable to authenticate.');	
 			return;
 		}
