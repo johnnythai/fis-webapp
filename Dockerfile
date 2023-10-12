@@ -14,6 +14,5 @@ FROM node:20
 WORKDIR /app
 COPY --from=build /app/build /app/build
 RUN npm install -g serve
-ENV PORT=3001
 EXPOSE 3001
 CMD ["serve", "-s", "build", "-l", "3001"]
