@@ -27,6 +27,7 @@ const fetchApi = async (pathParams: string, fetchOptions?: FetchOptions) => {
 		return auth
 	} catch (error) {
 		alert(error);
+		return
 	}
 };
 

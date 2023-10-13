@@ -1,4 +1,4 @@
-const apiUrl = () => {
+const getApiUrl = () => {
 	if (process.env.NODE_ENV == 'production') {
 		return 'https://fis.johnnythai.dev';
 	}
@@ -6,6 +6,6 @@ const apiUrl = () => {
 	return 'http://localhost:4001';
 };
 
-
+const apiUrl = getApiUrl();
 
 export { apiUrl };
