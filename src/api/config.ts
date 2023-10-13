@@ -1,5 +1,5 @@
 const getApiUrl = () => {
-	if (process.env.NODE_ENV == 'production') {
+	if (process.env.REACT_APP_ENV === 'production') {
 		return 'https://fis.johnnythai.dev';
 	}
 

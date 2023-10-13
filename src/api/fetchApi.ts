@@ -13,6 +13,7 @@ interface FetchOptions {
 
 
 const fetchApi = async (pathParams: string, fetchOptions?: FetchOptions) => {
+	console.log('env', process.env.NODE_ENV)
 	try{
 		console.log(`fetching from ${apiUrl} at ${pathParams} with options: ${fetchOptions}`);
 		const response = await fetch(apiUrl + pathParams, fetchOptions);
