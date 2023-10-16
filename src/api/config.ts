@@ -1,11 +1,3 @@
-const getApiUrl = () => {
-	if (process.env.REACT_APP_ENV === 'production') {
-		return 'https://fis.johnnythai.dev';
-	}
-
-	return 'http://localhost:4001';
-};
-
-const apiUrl = getApiUrl();
+const apiUrl = process.env.REACT_APP_API_URL; 
 
 export { apiUrl };
