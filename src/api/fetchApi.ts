@@ -1,4 +1,4 @@
-import { apiUrl } from "./config";
+// import { apiUrl } from "./config";
 
 
 interface FetchOptions {
@@ -13,7 +13,8 @@ interface FetchOptions {
 
 
 const fetchApi = async (pathParams: string, fetchOptions?: FetchOptions) => {
-	console.log('env', process.env.NODE_ENV)
+	const apiUrl = process.env.REACT_APP_API_URL;
+
 	try{
 		console.log(`fetching from ${apiUrl} at ${pathParams} with options: ${fetchOptions}`);
 		const response = await fetch(apiUrl + pathParams, fetchOptions);
