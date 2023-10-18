@@ -6,6 +6,8 @@ RUN npm install
 RUN npm install -g typescript
 COPY tsconfig.json ./
 COPY . .
+ARG REACT_APP_API_URL=https://fis.johnnythai.dev
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 RUN npm run build 
 
 
