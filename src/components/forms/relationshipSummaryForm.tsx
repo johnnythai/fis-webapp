@@ -68,6 +68,10 @@ const RelationshipSummaryForm = (props: { authentication: Authentication }) => {
 			? customerId = customerIdRef.current.value 
 			: customerId = await fetchCustomerId();
 
+		if (customerId instanceof Error) {
+			return
+		}
+
 		const fetchOptions = {
 			headers: {
 				horizonToken: horizonToken,

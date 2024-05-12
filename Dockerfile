@@ -1,5 +1,5 @@
 # BUILD
-FROM node:20 as build
+FROM node:22 as build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -10,9 +10,8 @@ ARG REACT_APP_API_URL=https://fis.johnnthai.dev
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 RUN npm run build 
 
-
 # RUN
-FROM node:20
+FROM node:22-alpine
 WORKDIR /app
 COPY --from=build /app/build /app/build
 RUN npm install -g serve
